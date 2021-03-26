@@ -11,13 +11,13 @@ class App extends Component {
         }
     }
 
-    getUsers(){
-      this.setState()
-      axios('http://localhost:8080/').then(response => this.setState({users: response.data.posts}))
+    getUsers() {
+        this.setState({loading: true})
+        axios('http://localhost:8080/').then(response => this.setState({users: response.data.posts}))
     }
 
     componentWillMount() {
-      this.getUsers()
+        this.getUsers()
     }
 
     render() {
