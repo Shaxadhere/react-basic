@@ -10,11 +10,19 @@ class App extends Component {
             users: [],
             loading: false
         }
+
+        // Binding Methods
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     getUsers() {
         this.setState({loading: true})
-        axios('http://localhost:8080/').then(response => this.setState({users: response.data.posts, loading: false}))
+        axios('http://localhost:8080/').then(response => this.setState({users: [...this.state.users, ...response.data.posts], loading: false}))
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.getUsers();
     }
 
     componentWillMount() {
@@ -22,14 +30,24 @@ class App extends Component {
     }
 
     render() {
+        const {loading, users} = this.state;
         return <div className="App">
+            <form onSubmit={
+                this.handleSubmit
+            }>
+                <input type="submit" value="Refresh"/>
+            </form>
             {
-            !this.state.loading ? this.state.users.map(user => (
-                <div>
-                    <h3>{user.title}</h3>
+            !loading ? users.map(user => (
+                <div key={user._id}>
+                    <h3 style={{color:'grey'}}>{
+                        user.title
+                    }</h3>
+
                 </div>
             )) : <Loading message="Loading users"/>
-        } </div>
+                }
+         </div>
     }
 }
 
