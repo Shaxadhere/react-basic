@@ -13,7 +13,7 @@ class App extends Component {
 
     getUsers() {
         this.setState({loading: true})
-        axios('http://localhost:8080/').then(response => this.setState({users: response.data.posts}))
+        axios('http://localhost:8080/').then(response => this.setState({users: response.data.posts, loading: false}))
     }
 
     componentWillMount() {
@@ -23,9 +23,11 @@ class App extends Component {
     render() {
         return <div className="App">
             {
-            this.state.users.map(user => <div>{
-                user.title
-            }</div>)
+            !this.state.loading ? this.state.users.map(user => (
+                <div>
+                    <h3>{user.title}</h3>
+                </div>
+            )) : "Loading.."
         } </div>
     }
 }
